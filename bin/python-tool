@@ -1,0 +1,41 @@
+#!python3
+
+import os
+import sys
+import yaml
+import logging
+import argparse
+
+
+if __name__ == '__main__':
+
+	# Command-line client
+
+	# Define constants
+	config_template = {'python-tool': {}}
+
+	# Gather Argument options
+	EXAMPLE_TEXT='Example:\n\tpython-tool '
+	parser = argparse.ArgumentParser(epilog=EXAMPLE_TEXT,formatter_class=argparse.RawDescriptionHelpFormatter)
+	parser.add_argument('-c', '--config', action='store', help='Specify a config file (./config.yml)',default='./config.yml')
+	parser.add_argument('-H', '--hosts', action='append', default=None, help='Collects arguments in an array.')
+	parser.add_argument('-d', '--dry-run', action='store_true', help='Store the existence of a variable.')
+	parser.add_argument('-l', '--log', action='store', help='Specify a file to log to.')
+	parser.add_argument('-v', '--debug', action='count', help='Include debug information in the output. Add \'v\'s for more output.',default=0)
+	args = parser.parse_args()
+
+	def debug(message,level) :
+		if args.debug >= level :
+			print(message,file=sys.stderr)
+
+	if args.log :
+		logging.basicConfig(level=logging.INFO,filename=args.log)
+
+	# Parse config
+	config_path = os.path.normpath(config_path)
+	file_descriptor = open(os.path.normpath(os.path.expanduser(os.path.expandvars(config_path))))
+	self._config = yaml.safe_load(file_descriptor)
+	if not isinstance(self._config,dict) :
+		raise ValueError('expected dictonary as top-level yaml object')
+
+	print('Hello World!')
