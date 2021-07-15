@@ -1,0 +1,12 @@
+[Unit]
+Description=
+After=multi-user.target
+
+[Service]
+Restart=always
+Type=simple
+WorkingDirectory=/etc/python-tool
+ExecStart=/etc/python-tool/bin/python-tool
+
+[Install]
+WantedBy=multi-user.target
