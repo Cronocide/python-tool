@@ -57,6 +57,6 @@ setup(name='python-tool',
 	install_requires=['pyyaml',],
 	scripts=['bin/python-tool'],
 	long_description=open('README.md').read(),
-	zip_safe=True,
-	cmdclass={'install':CustomInstallCommand,'develop':CustomDevelopCommand,'egg_info':CustomEggInfoCommand,'build_ext':CustomBuildExtCommand}
+	cmdclass={'install':CustomInstallCommand,'develop':CustomDevelopCommand,'egg_info':CustomEggInfoCommand,'build_ext':CustomBuildExtCommand},
+	zip_safe=True
 )

@@ -30,8 +30,9 @@ setup_install() {
 	if [[ "$OS" == "macOS" && $(ps -p 1 | grep launchd) == *"launchd" ]]; then
 		echo "Installing launchd job..."
 		SERVICE_FILE='com.cronocide.python-tool.plist'
-		SERVICE_DIR="~/Library/LaunchAgents/"
-		cp -r "$SERVICE_FILE" "$SERVICE_DIR"/
+		SERVICE_DIR="/Library/LaunchAgents/"
+		sudo cp -r "$SERVICE_FILE" "$SERVICE_DIR"/
+		sudo chmod 644 "$SERVICE_DIR"/"$SERVICE_FILE"
 		sudo launchctl load "$SERVICE_FILE"
 		echo "Installed launchd job."
 	fi
