@@ -12,5 +12,9 @@
     </array>
     <key>KeepAlive</key>
     <true/>
+    <key>StandardOutPath</key>
+    <string>/var/log/python-tool.log</string>
+    <key>StandardErrorPath</key>
+    <string>/var/log/python-tool.log</string>
 </dict>
 </plist>

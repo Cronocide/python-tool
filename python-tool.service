@@ -7,6 +7,9 @@ Restart=always
 Type=simple
 WorkingDirectory=/etc/python-tool
 ExecStart=/etc/python-tool/bin/python-tool
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=python-tool
 
 [Install]
 WantedBy=multi-user.target
