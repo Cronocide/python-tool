@@ -40,6 +40,8 @@ setup_install() {
 
 setup_develop() {
 	echo "Not installing service files due to being installed in development mode."
+	echo "Uncomment the next line to install service files anyway."
+	#setup_install
 }
 
 setup_egg_info() {
