@@ -7,7 +7,7 @@
 
 COMMAND="$1"
 NAME="python-tool"
-INSTALL="services"
+INSTALL=" services "
 
 [ -z "$1" ] && echo "No setup command given, nothing to do." && exit 1
 
