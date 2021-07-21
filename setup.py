@@ -43,7 +43,7 @@ class CustomEggInfoCommand(egg_info) :
 class CustomBuildExtCommand(build_ext) :
 	pass
 
-files = glob.glob('python-tool/externals/*.py')
+files = glob.glob('python-tool/plugins/*.py')
 
 setup(name='python-tool',
 	version='1.0.0',
@@ -53,7 +53,7 @@ setup(name='python-tool',
 	author_email='github@cronocide.com',
 	description='',
 	packages=find_packages(exclude=['tests']),
-	package_data={"": ['externals/*.py']},
+	package_data={"": ['plugins/*.py']},
 	install_requires=['pyyaml',],
 	scripts=['bin/python-tool'],
 	long_description=open('README.md').read(),
