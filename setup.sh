@@ -38,7 +38,7 @@ install_launchd() {
 	sudo cp -r "$SERVICE_FILE" "$SERVICE_DIR"/
 	sudo chown root:wheel "$SERVICE_DIR"/"$SERVICE_FILE"
 	sudo chmod 600 "$SERVICE_DIR"/"$SERVICE_FILE"
-	sudo launchctl load "$SERVICE_FILE"
+	sudo launchctl load "$SERVICE_DIR"/"$SERVICE_FILE"
 	echo "Installed launchd job."
 }
 
