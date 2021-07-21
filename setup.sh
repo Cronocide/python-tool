@@ -36,7 +36,8 @@ install_launchd() {
 	SERVICE_FILE="com.$USER.$NAME.plist"
 	SERVICE_DIR="/Library/LaunchAgents/"
 	sudo cp -r "$SERVICE_FILE" "$SERVICE_DIR"/
-	sudo chmod 644 "$SERVICE_DIR"/"$SERVICE_FILE"
+	sudo chown root:wheel "$SERVICE_DIR"/"$SERVICE_FILE"
+	sudo chmod 600 "$SERVICE_DIR"/"$SERVICE_FILE"
 	sudo launchctl load "$SERVICE_FILE"
 	echo "Installed launchd job."
 }
