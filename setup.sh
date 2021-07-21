@@ -41,7 +41,7 @@ install_launchd() {
 	echo "Installed launchd job."
 }
 
-install_service() {
+install_services() {
 	echo "Installing included service files..."
 	# Systemd job installation
 	if [[ "$OS" == "Linux" && $(pidof systemd) ]]; then
