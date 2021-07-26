@@ -1,7 +1,8 @@
 #!/bin/bash
+# An independent version of the new_python_tool function from my bash profile.
+
 
 # Boilerplate functions from bash_profile for convenience
-
 OS="$(uname -a)"
 [[ "$OS" == *"iPhone"* || "$OS" == *"iPad"* ]] && export OS="iOS"
 [[ "$OS" == *"ndroid"* ]] && export OS="Android"
@@ -41,7 +42,6 @@ sed_i() {
 }
 
 # Project creation
-
 new_python_tool() {
 	# Download and rename the template repo
 	__missing_reqs 'sed git find grep sort mv' && return 1
