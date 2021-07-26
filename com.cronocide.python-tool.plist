@@ -8,7 +8,7 @@
     <array>
         <string>/usr/local/bin/python-tool</string>
         <string>-c</string>
-        <string>/Users/cronocide/.config/python-tool/config.yml</string>
+        <string>/Users/cronocide/.config/python-tool.yml</string>
     </array>
     <key>KeepAlive</key>
     <true/>

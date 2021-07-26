@@ -5,8 +5,8 @@ After=multi-user.target
 [Service]
 Restart=always
 Type=simple
-WorkingDirectory=/etc/python-tool
-ExecStart=/etc/python-tool/bin/python-tool
+WorkingDirectory=/usr/local/
+ExecStart=/usr/local/bin/python-tool
 StandardOutput=syslog
 StandardError=syslog
 SyslogIdentifier=python-tool
