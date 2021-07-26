@@ -1,5 +1,6 @@
 #!/bin/bash
-# An independent version of the new_python_tool function from my bash profile.
+# A tool to create a new python project with less setup than usual.
+# v1.0 Jul 2021 by Cronocide
 
 
 # Boilerplate functions from bash_profile for convenience
@@ -141,6 +142,10 @@ new_python_tool() {
 	rm -rf ./"$NAME"/.git
 	git init ./"$NAME"
 
+	# Delete self from project_file
+	[ -f ./"$NAME"/new_python_tool.sh ] && echo "Removing project setup script..." && rm ./"$NAME"/new_python_tool.sh
+	echo "Python tool $NAME is ready to start."
+
 	# Next steps
 	echo "Next steps:"
 	echo " 1. Modify your bin/$NAME file to load your project libraries (if applicable)"
@@ -150,10 +155,6 @@ new_python_tool() {
 	echo " 5. Write the software"
 	echo " 6. ..."
 	echo " 7. Profit"
-
-	# Delete self from project_file
-	[ -f ./"$NAME"/new_python_tool.sh ] && echo "Removing project setup script..." && rm ./"$NAME"/new_python_tool.sh
-	echo "Python tool $NAME is ready to start."
 }
 
 new_python_tool "$1"
