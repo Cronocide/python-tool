@@ -45,23 +45,23 @@ sed_i() {
 new_python_tool() {
 	# Download and rename the template repo
 	__missing_reqs 'sed git find grep sort mv' && return 1
-	if [[ $(pwd) == *"cooltool"* ]]; then
-		echo "This script should not be run within the cooltool directory. Please move it to a neutral location to run." && return 1
+	if [[ $(pwd) == *"python-tool"* ]]; then
+		echo "This script should not be run within the python-tool directory. Please move it to a neutral location to run." && return 1
 	fi
 	NAME="$1"
 	if [[ $(echo "$1" | sed 's#^[a-z0-9\-]*$##' ) == "$NAME" ]]; then
 		echo "Tool name '""$NAME""' is invalid." && return 1
 	fi
-	if [ ! -d ./cooltool ]; then
+	if [ ! -d ./python-tool ]; then
 		echo "Downloading template..."
-		git clone 'https://github.com/Cronocide/cooltool.git'
+		git clone 'https://github.com/Cronocide/python-tool.git'
 	fi
 	echo "Renaming project..."
 	# Rather novel approach from https://stackoverflow.com/a/53734138
-	find ./ -depth -name '*cooltool*' | while IFS= read -r i; do mv $i ${i%cooltool*}$NAME${i##*cooltool}; done
+	find ./ -depth -name '*python-tool*' | while IFS= read -r i; do mv $i ${i%python-tool*}$NAME${i##*python-tool}; done
 	# "I'm assuming you have no spaces in the project name because you're not an idiot."
-	for i in $(grep -r 'cooltool' ./"$NAME" | grep -v '.git' | cut -d \: -f 1 | sort -u); do
-		sed_i "s#cooltool#$NAME#g" "$i"
+	for i in $(grep -r 'python-tool' ./"$NAME" | grep -v '.git' | cut -d \: -f 1 | sort -u); do
+		sed_i "s#python-tool#$NAME#g" "$i"
 	done
 	mv ./"$NAME"/com.cronocide."$NAME".plist ./"$NAME"/com."$USER"."$NAME".plist
 	echo "Configuring project..."
@@ -132,7 +132,7 @@ new_python_tool() {
 	fi
 
 	# Remove setup.sh if our tool doesn't need it to install.
-	if [ "$SERVICE_FILE" != 'y' && "$INSTALL_CONFIG" != 'y' ]; then
+	if [[ "$SERVICE_FILE" != 'y' && "$INSTALL_CONFIG" != 'y' ]]; then
 		rm ./"$NAME"/setup.sh
 	fi
 
