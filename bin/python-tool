@@ -34,8 +34,8 @@ if __name__ == '__main__':
 	# Parse config
 	config_path = os.path.normpath(args.config)
 	file_descriptor = open(os.path.normpath(os.path.expanduser(os.path.expandvars(config_path))))
-	self._config = yaml.safe_load(file_descriptor)
-	if not isinstance(self._config,dict) :
+	config = yaml.safe_load(file_descriptor)
+	if not isinstance(config,dict) :
 		raise ValueError('expected dictonary as top-level yaml object')
 
 	# Main functions
