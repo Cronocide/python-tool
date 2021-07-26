@@ -90,6 +90,7 @@ new_python_tool() {
 		read SERVICE_FILE
 	done
 	if [ "$SERVICE_FILE" == 'y' ]; then
+		sed_i "s#INSTALL=\"\(.*\)\"#INSTALL=\"\1services \"#g" ./"$NAME"/setup.sh
 		# Configure service file to log output to file?
 		while [[ "$SERVICE_LOG" != 'y' && "$SERVICE_LOG" != "n" ]]; do
 			echo "Configure the service file to log output? (y/n)"
@@ -124,7 +125,7 @@ new_python_tool() {
 
 	# Configure package to install a default configuration file?
 	while [[ "$INSTALL_CONFIG" != 'y' && "$INSTALL_CONFIG" != "n" ]]; do
-		echo "Configure package to load plugins? (y/n)"
+		echo "Configure package to install a config file? (y/n)"
 		read INSTALL_CONFIG
 	done
 	if [ "$INSTALL_CONFIG" == 'y' ]; then
