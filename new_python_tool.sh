@@ -94,7 +94,8 @@ new_python_tool() {
 	done
 	if [ "$PYTHON_MODULE" == 'y' ]; then
 		mkdir ./"$NAME"/"$NAME"
-		touch ./"$NAME"/"$NAME"/__init__.py
+#		touch ./"$NAME"/"$NAME"/__init__.py
+		echo "from $NAME.$NAME import *" > ./"$NAME"/"$NAME"/__init__.py
 		touch ./"$NAME"/"$NAME"/"$NAME".py
 		PYTHON_TOOL_SETUP_INSTRUCTIONS+="Put your main classes and functionality in $NAME/$NAME.py and import/use that functionality in bin/$NAME"
 	else
@@ -141,12 +142,15 @@ new_python_tool() {
 
 	# Configure package to install a default configuration file?
 	while [[ "$INSTALL_CONFIG" != 'y' && "$INSTALL_CONFIG" != "n" ]]; do
-		echo "Configure package to install a config file? (y/n)"
+		echo "Configure package to use and install a config file? (y/n)"
 		read INSTALL_CONFIG
 	done
 	if [ "$INSTALL_CONFIG" == 'y' ]; then
 		sed_i "s#INSTALL=\"\(.*\)\"#INSTALL=\"\1config \"#g" ./"$NAME"/setup.sh
+		sed_i "s/.*##config_\(parser.*\)/\1/g" ./"$NAME"/bin/"$NAME"
+		##config_parser
 	else
+		sed_i "s/.*##config_\(parser.*\)//g" ./"$NAME"/bin/"$NAME"
 		rm ./"$NAME"/config.yml
 	fi
 
