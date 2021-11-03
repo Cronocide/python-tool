@@ -18,7 +18,7 @@ if __name__ == '__main__':
 	# Gather Argument options
 	EXAMPLE_TEXT='Example:\n\tpython-tool -h'
 	parser = argparse.ArgumentParser(epilog=EXAMPLE_TEXT,formatter_class=argparse.RawDescriptionHelpFormatter)
-	##config_parser.add_argument('-c', '--config', action='store', help='Specify a config file (~/.config/python-tool.yml)',default='~/.config/python-tool.yml')
+	##CONFIG_parser.add_argument('-c', '--config', action='store', help='Specify a config file (~/.config/python-tool.yml)',default='~/.config/python-tool.yml')
 	parser.add_argument('-H', '--hosts', action='append', default=None, help='Collects arguments in an array.')
 	parser.add_argument('-d', '--dry-run', action='store_true', help='Store the existence of a variable.')
 	parser.add_argument('-l', '--log', action='store', help='Specify a file to log to.')
@@ -32,12 +32,15 @@ if __name__ == '__main__':
 	if args.log :
 		logging.basicConfig(level=logging.INFO,filename=args.log)
 
-	# Parse config
-	config_path = os.path.normpath(args.config)
-	file_descriptor = open(os.path.normpath(os.path.expanduser(os.path.expandvars(config_path))))
-	config = yaml.safe_load(file_descriptor)
-	if not isinstance(config,dict) :
-		raise ValueError('expected dictonary as top-level yaml object')
+	##CONFIG_# Parse config
+	##CONFIG_try :
+	##CONFIG_	config_path = os.path.normpath(args.config)
+	##CONFIG_	file_descriptor = open(os.path.normpath(os.path.expanduser(os.path.expandvars(config_path))))
+	##CONFIG_	config = yaml.safe_load(file_descriptor)
+	##CONFIG_	if not isinstance(config,dict) :
+	##CONFIG_		raise ValueError('expected dictonary as top-level yaml object')
+	##CONFIG_except Exception as e :
+	##CONFIG_	debug("Unable to parse config: " + str(e),0)
 
 	# Main functions
 	print('Hello World!')

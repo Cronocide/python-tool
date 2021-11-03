@@ -79,6 +79,7 @@ new_python_tool() {
 
 	# Record setup instructions
 	declare -a PYTHON_TOOL_SETUP_INSTRUCTIONS
+	declare -a PYTHON_TOOL_WARNINGS
 
 	# Describe the project
 	echo "Describe the project: "
@@ -147,10 +148,9 @@ new_python_tool() {
 	done
 	if [ "$INSTALL_CONFIG" == 'y' ]; then
 		sed_i "s#INSTALL=\"\(.*\)\"#INSTALL=\"\1config \"#g" ./"$NAME"/setup.sh
-		sed_i "s/.*##config_\(parser.*\)/\1/g" ./"$NAME"/bin/"$NAME"
-		##config_parser
+		sed_i "s/.*##CONFIG_\(.*\)/\1/g" ./"$NAME"/bin/"$NAME"
 	else
-		sed_i "s/.*##config_\(parser.*\)//g" ./"$NAME"/bin/"$NAME"
+		sed_i "s/.*##CONFIG_\(.*\)//g" ./"$NAME"/bin/"$NAME"
 		rm ./"$NAME"/config.yml
 	fi
 
