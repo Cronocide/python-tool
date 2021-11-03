@@ -100,6 +100,6 @@ if __name__ == '__main__':
 ##CONFIG_	except Exception as e :
 ##CONFIG_		debug("Unable to parse config: " + str(e),0)
 ##PLUGIN_	# Load plugins
-##PLUGIN_	use_plugins(search_plugins())
+##PLUGIN_	use_plugins(search_plugins(directory='/'.join(os.path.realpath(__file__).split('/')[:-2]) + '/python-tool/' + 'plugins'))
 	# Main functions
 	print('Hello World!')
