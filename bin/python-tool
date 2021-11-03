@@ -14,7 +14,7 @@ import python-tool
 ##PLUGIN__initialized_plugins = []
 
 ##PLUGIN_# Plugin loading code
-##PLUGIN_plugin_class = 'python-tool-plugin'
+##PLUGIN_plugin_class = 'python-toolPlugin'.strip('-').capitalize()
 ##PLUGIN_def add_plugin(plugin,reload) :
 ##PLUGIN_	"""Adds a given plugin and instance, reinitializing one if it already exists and such is specified."""
 ##PLUGIN_	plugin_name = plugin.__module__.split('.')[-1]
@@ -101,6 +101,7 @@ if __name__ == '__main__':
 ##CONFIG_	except Exception as e :
 ##CONFIG_		debug("Unable to parse config: " + str(e),0)
 ##PLUGIN_	# Load plugins
-##PLUGIN_	use_plugins(search_plugins(directory='/'.join(os.path.realpath(__file__).split('/')[:-2]) + '/python-tool/' + 'plugins'))
+##PLUGIN_	available_plugins = search_plugins(directory='/'.join(os.path.realpath(__file__).split('/')[:-2]) + '/python-tool/' + 'plugins')
+##PLUGIN_	use_plugins([x for x in available_plugins.values()])
 	# Main functions
 	print('Hello World!')
