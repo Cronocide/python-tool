@@ -35,7 +35,7 @@ sed_i() {
 		if [[ $(type gsed 2>/dev/null) != "" ]]; then
 			gsed -i "$@";
 		else
-			sed -i '' $@;
+			sed -i '' "$@";
 		fi;
 	else
 		sed -i $@;
@@ -106,7 +106,6 @@ new_python_tool() {
 		echo "Don't forget to configure your service files."
 	else
 		# Remove the custom setup scripts
-		sed_i 's#cmdclass=.*##g' ./"$NAME"/setup.py
 		rm ./"$NAME"/com."$USER"."$NAME".plist
 		rm ./"$NAME"/"$NAME".service
 	fi
@@ -135,6 +134,7 @@ new_python_tool() {
 
 	# Remove setup.sh if our tool doesn't need it to install.
 	if [[ "$SERVICE_FILE" != 'y' && "$INSTALL_CONFIG" != 'y' ]]; then
+		sed_i 's#cmdclass=.*##g' ./"$NAME"/setup.py
 		rm ./"$NAME"/setup.sh
 	fi
 
