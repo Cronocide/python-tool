@@ -101,7 +101,7 @@ new_python_tool() {
 		PYTHON_TOOL_SETUP_INSTRUCTIONS+="Put your main classes and functionality in $NAME/$NAME.py and import/use that functionality in bin/$NAME"
 		PYTHON_TOOL_WARNINGS+='You can use this package as a library! Classes you define in '"$NAME/$NAME.py"" can be imported with 'import $NAME.class_name"
 	else
-		sed_i 's#import python-tool##g' ./"$NAME"/bin/"$NAME"
+		sed_i "s#import $NAME##g" ./"$NAME"/bin/"$NAME"
 	fi
 
 	# Configure package to install as a persistent service?
@@ -140,6 +140,7 @@ new_python_tool() {
 		! [ -d ./"$NAME"/"$NAME" ] && mkdir ./"$NAME"/"$NAME"
 		sed_i "s/.*##PLUGIN_\(.*\)/\1/g" ./"$NAME"/bin/"$NAME"
 		mkdir ./"$NAME"/"$NAME"/plugins
+		touch ./"$NAME"/"$NAME"/plugins/plugin.py
 	else :
 		sed_i 's#.*plugins.*##g' ./"$NAME"/setup.py
 		sed_i "s/.*##PLUGIN_\(.*\)//g" ./"$NAME"/bin/"$NAME"
