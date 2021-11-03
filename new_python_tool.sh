@@ -29,6 +29,12 @@ __missing_sed() {
 	__no_req "sed" && __no_req "gsed" && echo "sed or gsed is required to perform this function." && return 0
 }
 
+__require_bash() {
+	__no_req "sort" && return 1;
+	[[ $(printf "$1\n$BASH_VERSION" | sort -V | head -n 1) != "$1" ]] && return 1;
+	return 0
+}
+
 sed_i() {
 	__missing_sed && return 1;
 	if [[ "$OS" == "macOS" ]]; then
@@ -44,7 +50,8 @@ sed_i() {
 
 # Project creation
 new_python_tool() {
-	# Download and rename the template repo
+	# Check that we can run this tool
+	if ! $(__require_bash "4.3"); then echo "Bash 4.3 or greater is required to run this script." && return 1; fi
 	__missing_reqs 'sed git find grep sort mv' && return 1
 	if [[ $(pwd) == *"python-tool"* ]]; then
 		echo "This script should not be run within the python-tool directory. Please move it to a neutral location to run." && return 1
@@ -54,6 +61,8 @@ new_python_tool() {
 	if [[ $(echo "$1" | sed 's#^[a-z0-9\-]*$##' ) == "$NAME" ]]; then
 		echo "Tool name '""$NAME""' is invalid." && return 1
 	fi
+
+	# Download and rename the template repo
 	if [ ! -d ./python-tool ]; then
 		echo "Downloading template..."
 		git clone 'https://github.com/Cronocide/python-tool.git'
@@ -67,6 +76,9 @@ new_python_tool() {
 	done
 	mv ./"$NAME"/com.cronocide."$NAME".plist ./"$NAME"/com."$USER"."$NAME".plist
 	echo "Configuring project..."
+
+	# Record setup instructions
+	declare -a PYTHON_TOOL_SETUP_INSTRUCTIONS
 
 	# Describe the project
 	echo "Describe the project: "
@@ -84,6 +96,9 @@ new_python_tool() {
 		mkdir ./"$NAME"/"$NAME"
 		touch ./"$NAME"/"$NAME"/__init__.py
 		touch ./"$NAME"/"$NAME"/"$NAME".py
+		PYTHON_TOOL_SETUP_INSTRUCTIONS+="Put your main classes and functionality in $NAME/$NAME.py and import/use that functionality in bin/$NAME"
+	else
+		sed_i 's#import python-tool##g' ./"$NAME"/bin/"$NAME"
 	fi
 
 	# Configure package to install as a persistent service?
