@@ -49,6 +49,7 @@ new_python_tool() {
 	if [[ $(pwd) == *"python-tool"* ]]; then
 		echo "This script should not be run within the python-tool directory. Please move it to a neutral location to run." && return 1
 	fi
+	[ -z "$1" ] && echo "Usage: new_python_tool <name_of_tool>" && return 1
 	NAME="$1"
 	if [[ $(echo "$1" | sed 's#^[a-z0-9\-]*$##' ) == "$NAME" ]]; then
 		echo "Tool name '""$NAME""' is invalid." && return 1
