@@ -6,6 +6,7 @@ import yaml
 import logging
 import argparse
 import python-tool
+##PLUGIN_import inspect
 ##PLUGIN_import importlib
 # Import your custom libraries here
 
@@ -60,11 +61,15 @@ import python-tool
 ##PLUGIN_	name_map = {}
 ##PLUGIN_	candidates = {x.split('.')[0]:x for x in os.listdir(directory) if x.endswith('.py')}
 ##PLUGIN_	for name,filename in candidates.items() :
-##PLUGIN_		spec = importlib.util.spec_from_file_location(name, directory + '/' + filename)
-##PLUGIN_		mod = importlib.util.module_from_spec(spec)
-##PLUGIN_		spec.loader.exec_module(mod)
-##PLUGIN_		instance = getattr(mod,plugin_class)
-##PLUGIN_		name_map.update({filename.split('.')[0]:instance})
+##PLUGIN_		try :
+##PLUGIN_			spec = importlib.util.spec_from_file_location(name, directory + '/' + filename)
+##PLUGIN_			mod = importlib.util.module_from_spec(spec)
+##PLUGIN_			spec.loader.exec_module(mod)
+##PLUGIN_			instance = getattr(mod,plugin_class)
+##PLUGIN_			name_map.update({filename.split('.')[0]:instance})
+##PLUGIN_		except Exception as e :
+##PLUGIN_			# Handle plugin loading issues if desired
+##PLUGIN_			print("Unable to load plugin from " + filename + ": " + str(e))
 ##PLUGIN_	return name_map
 
 if __name__ == '__main__':
