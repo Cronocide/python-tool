@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # A tool to create a new python project with less setup than usual.
 # v1.0 Jul 2021 by Cronocide
 
