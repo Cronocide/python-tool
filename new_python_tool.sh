@@ -130,6 +130,8 @@ new_python_tool() {
 	done
 	if [ "$INSTALL_CONFIG" == 'y' ]; then
 		sed_i "s#INSTALL=\"\(.*\)\"#INSTALL=\"\1config \"#g" ./"$NAME"/setup.sh
+	else
+		rm ./"$NAME"/config.yml
 	fi
 
 	# Remove setup.sh if our tool doesn't need it to install.
