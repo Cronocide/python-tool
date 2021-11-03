@@ -63,7 +63,7 @@ import python-tool
 ##PLUGIN_		spec = importlib.util.spec_from_file_location(name, directory + '/' + filename)
 ##PLUGIN_		mod = importlib.util.module_from_spec(spec)
 ##PLUGIN_		spec.loader.exec_module(mod)
-##PLUGIN_		instance = getattr(mod,'ServiceDelegate')
+##PLUGIN_		instance = getattr(mod,plugin_class)
 ##PLUGIN_		name_map.update({filename.split('.')[0]:instance})
 ##PLUGIN_	return name_map
 
