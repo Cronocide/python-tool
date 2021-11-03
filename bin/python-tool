@@ -8,6 +8,64 @@ import argparse
 import python-tool
 # Import your custom libraries here
 
+##PLUGIN__plugin_map = {}
+##PLUGIN__delegate_map = {}
+##PLUGIN__initialized_plugins = []
+
+##PLUGIN_# Plugin loading code
+##PLUGIN_plugin_class = 'python-tool-plugin'
+##PLUGIN_def add_plugin(plugin,reload) :
+##PLUGIN_	"""Adds a given plugin and instance, reinitializing one if it already exists and such is specified."""
+##PLUGIN_	plugin_name = plugin.__module__.split('.')[-1]
+##PLUGIN_	if not reload and plugin_name in _plugin_map.keys():
+##PLUGIN_		pass
+##PLUGIN_	else :
+##PLUGIN_		# We can't startup the plugin here because it hasn't been configured. We'll handle that at runtime.
+##PLUGIN_		try:
+##PLUGIN_			# Remove any intialized objects of the same name, forcing a reinitialization
+##PLUGIN_			_initialized_plugins.remove(_plugin_map[plugin_name])
+##PLUGIN_		except:
+##PLUGIN_			pass
+##PLUGIN_		_plugin_map.update({plugin_name:plugin})
+
+##PLUGIN_def use_plugins(plugins,reload=False) :
+##PLUGIN_	"""Defines plugins that should be used in a lookup, optionally forcing them to reload."""
+##PLUGIN_	# Verify data
+##PLUGIN_	if type(plugins) != list :
+##PLUGIN_		raise ValueError('argument \'plugins\' should be of type list')
+##PLUGIN_	for plugin in plugins :
+##PLUGIN_		# Check if the plugin is a string or a descendent of a python-tool-plugin class
+##PLUGIN_		if type(plugin) != str and plugin_class not in [x.__name__ for x in inspect.getmro(plugin)] :
+##PLUGIN_			raise ValueError('unkown type for plugin')
+##PLUGIN_		# Find plugins by name using a default path
+##PLUGIN_		if type(plugin) == str :
+##PLUGIN_			available_plugins = [y for x,y in search_plugins().items() if x == plugin and plugin_class in [z.__name__ for z in inspect.getmro(y)]]
+##PLUGIN_			if len(available_plugins) == 0 :
+##PLUGIN_				raise FileNotFoundError(plugin + '.py not found')
+##PLUGIN_			plugin = available_plugins[0]
+##PLUGIN_		if plugin_class in [x.__name__ for x in inspect.getmro(plugin)] :
+##PLUGIN_			add_plugin(plugin,reload)
+##PLUGIN_			continue
+
+##PLUGIN_def get_plugins() :
+##PLUGIN_	"""Returns a map of plugins configured and loaded."""
+##PLUGIN_	return _plugin_map
+
+##PLUGIN_def search_plugins(directory=None) :
+##PLUGIN_	"""Searches a given directory for compatible plugins and returns a map of available plugin names and classes."""
+##PLUGIN_	if not directory :
+##PLUGIN_		directory = '/'.join(os.path.realpath(__file__).split('/')[:-1]) + '/' + 'plugins'
+##PLUGIN_	directory = os.path.normpath(os.path.expanduser(os.path.expandvars(directory)))
+##PLUGIN_	name_map = {}
+##PLUGIN_	candidates = {x.split('.')[0]:x for x in os.listdir(directory) if x.endswith('.py')}
+##PLUGIN_	for name,filename in candidates.items() :
+##PLUGIN_		spec = importlib.util.spec_from_file_location(name, directory + '/' + filename)
+##PLUGIN_		mod = importlib.util.module_from_spec(spec)
+##PLUGIN_		spec.loader.exec_module(mod)
+##PLUGIN_		instance = getattr(mod,'ServiceDelegate')
+##PLUGIN_		name_map.update({filename.split('.')[0]:instance})
+##PLUGIN_	return name_map
+
 if __name__ == '__main__':
 
 	# Command-line client
@@ -41,6 +99,7 @@ if __name__ == '__main__':
 ##CONFIG_			raise ValueError('expected dictonary as top-level yaml object')
 ##CONFIG_	except Exception as e :
 ##CONFIG_		debug("Unable to parse config: " + str(e),0)
-
+##PLUGIN_	# Load plugins
+##PLUGIN_	use_plugins(search_plugins())
 	# Main functions
 	print('Hello World!')

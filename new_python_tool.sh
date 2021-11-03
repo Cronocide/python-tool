@@ -95,17 +95,18 @@ new_python_tool() {
 	done
 	if [ "$PYTHON_MODULE" == 'y' ]; then
 		mkdir ./"$NAME"/"$NAME"
-#		touch ./"$NAME"/"$NAME"/__init__.py
 		echo "from $NAME.$NAME import *" > ./"$NAME"/"$NAME"/__init__.py
-		touch ./"$NAME"/"$NAME"/"$NAME".py
+#		touch ./"$NAME"/"$NAME"/"$NAME".py
+		echo "# Write your modular code (classes, functions, etc) here. They'll be automatically imported in bin/$NAME" > ./"$NAME"/"$NAME"/"$NAME".py
 		PYTHON_TOOL_SETUP_INSTRUCTIONS+="Put your main classes and functionality in $NAME/$NAME.py and import/use that functionality in bin/$NAME"
+		PYTHON_TOOL_WARNINGS+='You can use this package as a library! Classes you define in '"$NAME/$NAME.py"" can be imported with 'import $NAME.class_name"
 	else
 		sed_i 's#import python-tool##g' ./"$NAME"/bin/"$NAME"
 	fi
 
 	# Configure package to install as a persistent service?
 	while [[ "$SERVICE_FILE" != 'y' && "$SERVICE_FILE" != "n" ]]; do
-		echo "Install a persistent service file? (y/n)"
+		echo "Install a persistent service file? (systemd/launchd services ONLY) (y/n)"
 		read SERVICE_FILE
 	done
 	if [ "$SERVICE_FILE" == 'y' ]; then
@@ -121,7 +122,8 @@ new_python_tool() {
 			sed_i 's#.*[sS]yslog.*##g' ./"$NAME"/"$NAME".service
 		fi
 		# Don't forget to configure the service files.
-		echo "Don't forget to configure your service files."
+		PYTHON_TOOL_SETUP_INSTRUCTIONS+="Modify your service files ($NAME.service and com.$USER.$NAME.plist) to schedule when the tool should run. By default, they run at boot and stay alive."
+#		echo "Don't forget to configure your service files."
 	else
 		# Remove the custom setup scripts
 		rm ./"$NAME"/com."$USER"."$NAME".plist
@@ -136,9 +138,11 @@ new_python_tool() {
 	if [ "$USE_PLUGINS" == 'y' ]; then
 		# You've made Thomas Hatch proud.
 		! [ -d ./"$NAME"/"$NAME" ] && mkdir ./"$NAME"/"$NAME"
+		sed_i "s/.*##PLUGIN_\(.*\)/\1/g" ./"$NAME"/bin/"$NAME"
 		mkdir ./"$NAME"/"$NAME"/plugins
 	else :
 		sed_i 's#.*plugins.*##g' ./"$NAME"/setup.py
+		sed_i "s/.*##PLUGIN_\(.*\)//g" ./"$NAME"/bin/"$NAME"
 	fi
 
 	# Configure package to install a default configuration file?
@@ -149,6 +153,7 @@ new_python_tool() {
 	if [ "$INSTALL_CONFIG" == 'y' ]; then
 		sed_i "s#INSTALL=\"\(.*\)\"#INSTALL=\"\1config \"#g" ./"$NAME"/setup.sh
 		sed_i "s/.*##CONFIG_\(.*\)/\1/g" ./"$NAME"/bin/"$NAME"
+		PYTHON_TOOL_WARNINGS+="You'll need to install a copy of the config file yourself for debugging, as config.yml will only be installed when the package is installed."
 	else
 		sed_i "s/.*##CONFIG_\(.*\)//g" ./"$NAME"/bin/"$NAME"
 		rm ./"$NAME"/config.yml
@@ -158,6 +163,8 @@ new_python_tool() {
 	if [[ "$SERVICE_FILE" != 'y' && "$INSTALL_CONFIG" != 'y' ]]; then
 		sed_i 's#cmdclass=.*##g' ./"$NAME"/setup.py
 		rm ./"$NAME"/setup.sh
+	else
+		PYTHON_TOOL_WARNINGS+="The target system will need to have bash to run the postinstall actions you've chosen."
 	fi
 
 	# Initialize the git repo
