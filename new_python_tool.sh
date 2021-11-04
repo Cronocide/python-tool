@@ -149,7 +149,7 @@ new_python_tool() {
 		fi
 	else :
 		sed_i 's#.*plugins.*##g' ./"$NAME"/setup.py
-		sed_i "s/.*##PLUGIN_\(.*\)//g" ./"$NAME"/bin/"$NAME"
+		sed_i "/.*##PLUGIN_\(.*\)/d" ./"$NAME"/bin/"$NAME"
 	fi
 
 	# Configure package to install a default configuration file?
@@ -162,7 +162,7 @@ new_python_tool() {
 		sed_i "s/.*##CONFIG_\(.*\)/\1/g" ./"$NAME"/bin/"$NAME"
 		PYTHON_TOOL_WARNINGS+=("You'll need to install a copy of the config file yourself for debugging, as config.yml will only be installed when the package is installed.")
 	else
-		sed_i "s/.*##CONFIG_\(.*\)//g" ./"$NAME"/bin/"$NAME"
+		sed_i "/.*##CONFIG_\(.*\)/d" ./"$NAME"/bin/"$NAME"
 		rm ./"$NAME"/config.yml
 	fi
 
