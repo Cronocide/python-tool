@@ -96,7 +96,6 @@ new_python_tool() {
 	if [ "$PYTHON_MODULE" == 'y' ]; then
 		mkdir ./"$NAME"/"$NAME"
 		echo "from $NAME.$NAME import *" > ./"$NAME"/"$NAME"/__init__.py
-#		touch ./"$NAME"/"$NAME"/"$NAME".py
 		echo "# Write your modular code (classes, functions, etc) here. They'll be automatically imported in bin/$NAME" > ./"$NAME"/"$NAME"/"$NAME".py
 		PYTHON_TOOL_SETUP_INSTRUCTIONS+=("Put your main classes and functionality in $NAME/$NAME.py and import/use that functionality in bin/$NAME")
 		PYTHON_TOOL_WARNINGS+=('You can use this package as a library! Classes you define in '"$NAME/$NAME.py"" can be imported with 'import $NAME.class_name")
@@ -124,7 +123,6 @@ new_python_tool() {
 		fi
 		# Don't forget to configure the service files.
 		PYTHON_TOOL_SETUP_INSTRUCTIONS+=("Modify your service files ($NAME.service and com.$USER.$NAME.plist) to schedule when the tool should run. By default, they run at boot and stay alive.")
-#		echo "Don't forget to configure your service files."
 	else
 		# Remove the custom setup scripts
 		rm ./"$NAME"/com."$USER"."$NAME".plist
@@ -188,7 +186,7 @@ new_python_tool() {
 	# Next steps
 	echo "Next steps:"
 	OLDIFS=$IFS
-	IFS=$'\n' 
+	IFS=$'\n'
 	for ((i = 0; i < ${#PYTHON_TOOL_SETUP_INSTRUCTIONS[@]}; i++)); do
 		STEPCOUNT=$(( "$i" + 1 ))
 		echo " $STEPCOUNT. ${PYTHON_TOOL_SETUP_INSTRUCTIONS[$i]}"
@@ -196,10 +194,15 @@ new_python_tool() {
 	STEPCOUNT=$(( $STEPCOUNT + 1 ))
 	echo " $STEPCOUNT. ..." && STEPCOUNT=$(( $STEPCOUNT + 1 )) && echo " $STEPCOUNT. Profit" && echo
 	IFS=$OLDIFS
-	echo "Things to consider:"
-	for WARNING in "${PYTHON_TOOL_WARNINGS[@]}"; do
-		echo "* $WARNING"
-	done
+	if [[ ${#PYTHON_TOOL_WARNINGS[@]} -gt 0 ]]; then
+		OLDIFS=$IFS
+		IFS=$'\n'
+		echo "Things to consider:"
+		for ((i = 0; i < ${#PYTHON_TOOL_WARNINGS[@]}; i++)); do
+			echo "* ${PYTHON_TOOL_WARNINGS[$i]}"
+		done
+		IFS=$OLDIFS
+	fi
 }
 
 new_python_tool "$1"
