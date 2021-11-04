@@ -75,7 +75,6 @@ import python-tool
 if __name__ == '__main__':
 
 	# Command-line client
-
 	# Define constants
 	config_template = {'python-tool': {}}
 
