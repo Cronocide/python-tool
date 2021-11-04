@@ -98,9 +98,10 @@ new_python_tool() {
 		echo "from $NAME.$NAME import *" > ./"$NAME"/"$NAME"/__init__.py
 #		touch ./"$NAME"/"$NAME"/"$NAME".py
 		echo "# Write your modular code (classes, functions, etc) here. They'll be automatically imported in bin/$NAME" > ./"$NAME"/"$NAME"/"$NAME".py
-		PYTHON_TOOL_SETUP_INSTRUCTIONS+="Put your main classes and functionality in $NAME/$NAME.py and import/use that functionality in bin/$NAME"
-		PYTHON_TOOL_WARNINGS+='You can use this package as a library! Classes you define in '"$NAME/$NAME.py"" can be imported with 'import $NAME.class_name"
+		PYTHON_TOOL_SETUP_INSTRUCTIONS+=("Put your main classes and functionality in $NAME/$NAME.py and import/use that functionality in bin/$NAME")
+		PYTHON_TOOL_WARNINGS+=('You can use this package as a library! Classes you define in '"$NAME/$NAME.py"" can be imported with 'import $NAME.class_name")
 	else
+		PYTHON_TOOL_SETUP_INSTRUCTIONS+=("Put your main classes and functionality in bin/$NAME")
 		sed_i "s#import $NAME##g" ./"$NAME"/bin/"$NAME"
 	fi
 
@@ -122,7 +123,7 @@ new_python_tool() {
 			sed_i 's#.*[sS]yslog.*##g' ./"$NAME"/"$NAME".service
 		fi
 		# Don't forget to configure the service files.
-		PYTHON_TOOL_SETUP_INSTRUCTIONS+="Modify your service files ($NAME.service and com.$USER.$NAME.plist) to schedule when the tool should run. By default, they run at boot and stay alive."
+		PYTHON_TOOL_SETUP_INSTRUCTIONS+=("Modify your service files ($NAME.service and com.$USER.$NAME.plist) to schedule when the tool should run. By default, they run at boot and stay alive.")
 #		echo "Don't forget to configure your service files."
 	else
 		# Remove the custom setup scripts
@@ -141,10 +142,10 @@ new_python_tool() {
 		sed_i "s/.*##PLUGIN_\(.*\)/\1/g" ./"$NAME"/bin/"$NAME"
 		mkdir ./"$NAME"/"$NAME"/plugins
 		touch ./"$NAME"/"$NAME"/plugins/plugin.py
-		PYTHON_TOOL_SETUP_INSTRUCTIONS+="Set your plugin class by setting the plugin_class variable in bin/$NAME and defining the class in $NAME/plugins/*.py files."
-		PYTHON_TOOL_WARNINGS+="At least one .py file needs to exist in $NAME/plugins/ for the plugin directory to be packaged for install. 'plugin.py' is provided for this purpose, but can be removed if you have other plugins. The file can be empty."
+		PYTHON_TOOL_SETUP_INSTRUCTIONS+=("Set your plugin class by setting the plugin_class variable in bin/$NAME and defining the class in $NAME/plugins/*.py files.")
+		PYTHON_TOOL_WARNINGS+=("At least one .py file needs to exist in $NAME/plugins/ for the plugin directory to be packaged for install. 'plugin.py' is provided for this purpose, but can be removed if you have other plugins. The file can be empty.")
 		if [[ "$PYTHON_MODULE" == 'y' ]]; then
-			PYTHON_TOOL_WARNINGS+="Migrating the plugin-loading logic from bin/$NAME to $NAME/$NAME.py might be a good idea if you want your plugins to be loaded as part of your library."
+			PYTHON_TOOL_WARNINGS+=("Migrating the plugin-loading logic from bin/$NAME to $NAME/$NAME.py might be a good idea if you want your plugins to be loaded as part of your library.")
 		fi
 	else :
 		sed_i 's#.*plugins.*##g' ./"$NAME"/setup.py
@@ -159,7 +160,7 @@ new_python_tool() {
 	if [ "$INSTALL_CONFIG" == 'y' ]; then
 		sed_i "s#INSTALL=\"\(.*\)\"#INSTALL=\"\1config \"#g" ./"$NAME"/setup.sh
 		sed_i "s/.*##CONFIG_\(.*\)/\1/g" ./"$NAME"/bin/"$NAME"
-		PYTHON_TOOL_WARNINGS+="You'll need to install a copy of the config file yourself for debugging, as config.yml will only be installed when the package is installed."
+		PYTHON_TOOL_WARNINGS+=("You'll need to install a copy of the config file yourself for debugging, as config.yml will only be installed when the package is installed.")
 	else
 		sed_i "s/.*##CONFIG_\(.*\)//g" ./"$NAME"/bin/"$NAME"
 		rm ./"$NAME"/config.yml
@@ -170,7 +171,7 @@ new_python_tool() {
 		sed_i 's#cmdclass=.*##g' ./"$NAME"/setup.py
 		rm ./"$NAME"/setup.sh
 	else
-		PYTHON_TOOL_WARNINGS+="The target system will need to have bash to run the postinstall actions you've chosen."
+		PYTHON_TOOL_WARNINGS+=("The target system will need to have bash to run the postinstall actions you've chosen.")
 	fi
 
 	# Initialize the git repo
@@ -179,17 +180,26 @@ new_python_tool() {
 
 	# Delete self from project_file
 	[ -f ./"$NAME"/new_python_tool.sh ] && echo "Removing project setup script..." && rm ./"$NAME"/new_python_tool.sh
-	echo "Python tool $NAME is ready to start."
+	echo "Python tool $NAME is ready to start!"
+
+	PYTHON_TOOL_SETUP_INSTRUCTIONS+=("Add a remote to the git repo (git remote add origin <url>)")
+	PYTHON_TOOL_SETUP_INSTRUCTIONS+=("Update your library dependencies in setup.py as you add them to your project.")
 
 	# Next steps
 	echo "Next steps:"
-	echo " 1. Modify your bin/$NAME file to load your project libraries (if applicable)"
-	echo " 2. Add a remote to the git repo"
-	echo " 3. Add the correct dependencies in setup.py"
-	echo " 4. Update the execution and logging parameters in your service files (if applicable)"
-	echo " 5. Write the software"
-	echo " 6. ..."
-	echo " 7. Profit"
+	OLDIFS=$IFS
+	IFS=$'\n' 
+	for ((i = 0; i < ${#PYTHON_TOOL_SETUP_INSTRUCTIONS[@]}; i++)); do
+		STEPCOUNT=$(( "$i" + 1 ))
+		echo " $STEPCOUNT. ${PYTHON_TOOL_SETUP_INSTRUCTIONS[$i]}"
+	done
+	STEPCOUNT=$(( $STEPCOUNT + 1 ))
+	echo " $STEPCOUNT. ..." && STEPCOUNT=$(( $STEPCOUNT + 1 )) && echo " $STEPCOUNT. Profit" && echo
+	IFS=$OLDIFS
+	echo "Things to consider:"
+	for WARNING in "${PYTHON_TOOL_WARNINGS[@]}"; do
+		echo "* $WARNING"
+	done
 }
 
 new_python_tool "$1"
