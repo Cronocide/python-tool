@@ -58,7 +58,7 @@ new_python_tool() {
 	fi
 	[ -z "$1" ] && echo "Usage: new_python_tool <name_of_tool>" && return 1
 	NAME="$1"
-	if [[ $(echo "$1" | sed 's#^[a-z0-9\-]*$##' ) == "$NAME" ]]; then
+	if [[ $(echo "$1" | sed 's#^[a-z0-9\_]*$##' ) == "$NAME" ]]; then
 		echo "Tool name '""$NAME""' is invalid." && return 1
 	fi
 
