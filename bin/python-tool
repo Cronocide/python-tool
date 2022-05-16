@@ -15,7 +15,7 @@ import python-tool
 ##PLUGIN__initialized_plugins = []
 
 ##PLUGIN_# Plugin loading code
-##PLUGIN_plugin_class = 'python-toolPlugin'.strip('-').capitalize()
+##PLUGIN_plugin_class = 'python-tool'.strip('-').capitalize() + 'Plugin'
 ##PLUGIN_def add_plugin(plugin,reload) :
 ##PLUGIN_	"""Adds a given plugin and instance, reinitializing one if it already exists and such is specified."""
 ##PLUGIN_	plugin_name = plugin.__module__.split('.')[-1]
