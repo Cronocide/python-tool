@@ -142,6 +142,7 @@ new_python_tool() {
 		touch ./"$NAME"/"$NAME"/plugins/plugin.py
 		PYTHON_TOOL_SETUP_INSTRUCTIONS+=("Set your plugin class by setting the plugin_class variable in bin/$NAME and defining the class in $NAME/plugins/*.py files.")
 		PYTHON_TOOL_WARNINGS+=("At least one .py file needs to exist in $NAME/plugins/ for the plugin directory to be packaged for install. 'plugin.py' is provided for this purpose, but can be removed if you have other plugins. The file can be empty.")
+		PYTHON_TOOL_WARNINGS+=("When installing this package, you MUST use 'pip install -e' to link the executable to the package directory. This allows your plugins to work.")
 		if [[ "$PYTHON_MODULE" == 'y' ]]; then
 			PYTHON_TOOL_WARNINGS+=("Migrating the plugin-loading logic from bin/$NAME to $NAME/$NAME.py might be a good idea if you want your plugins to be loaded as part of your library.")
 		fi
