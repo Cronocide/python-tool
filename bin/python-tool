@@ -128,7 +128,7 @@ if __name__ == '__main__':
 ##CONFIG_		if not isinstance(config,dict) :
 ##CONFIG_			raise ValueError('expected dictonary as top-level yaml object')
 ##CONFIG_	except Exception as e :
-##CONFIG_		log.error("Unable to parse config: " + str(e),0)
+##CONFIG_		log.error("Unable to parse config: " + str(e))
 ##PLUGIN_	# Load plugins
 ##PLUGIN_	available_plugins = search_plugins(directory='/'.join(os.path.realpath(__file__).split('/')[:-2]) + '/python-tool/' + 'plugins')
 ##PLUGIN_	use_plugins([x for x in available_plugins.values()])
