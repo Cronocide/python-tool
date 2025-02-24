@@ -44,7 +44,7 @@ sed_i() {
 			sed -i '' "$@";
 		fi;
 	else
-		sed -i $@;
+		sed -i "$@";
 	fi
 }
 
