@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=75"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "python-tool"
+version = "1.0.0"
+authors = [
+    {name = "Daniel Dayley", email = "github@cronocide.com"},
+]
+description = ""
+readme = "README.md"
+license = {text = "Apache-2.0"}
+requires-python = ">=3.9"
+dependencies = [
+    "pyyaml",
+]
+
+[tool.setuptools]
+include-package-data = true
+packages = { find = { exclude = ["tests*"] } }
+script-files = [
+    "bin/python-tool",
+]
+py-modules = [
+    "build_commands",
+]
+
+[tool.setuptools.package-data]
+"*" = ["plugins/*.py"]
+
+[project.entry-points."distutils.commands"]
+install = "build_commands:CustomInstallCommand"
+develop = "build_commands:CustomDevelopCommand"
+egg_info = "build_commands:CustomEggInfoCommand"
+build_ext = "build_commands:CustomBuildExtCommand"

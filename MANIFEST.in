@@ -1,0 +1,11 @@
+include README.md
+include setup.sh
+include config.yml
+include python-tool.service
+include com.cronocide.python-tool.plist
+recursive-include bin *
+# Include plugin files under any package's plugins/ dir
+recursive-include */plugins *.py
+
+
+
